@@ -19,7 +19,6 @@ import java.awt.*;
 import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.border.*;
-import java.awt.image.*;
 
 public class View {
 
@@ -48,7 +47,7 @@ public class View {
 	private void setFrame() {
 		frame = new JFrame("Tic Tac Toe");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setSize(300, 300);
+		frame.setSize(300, 350);
 		frame.setVisible(true);
 
 		Container cp = frame.getContentPane();
@@ -84,7 +83,7 @@ public class View {
 	
 	private void setInfoPanel(){
 		info = new JLabel("Enter your Player name...");
-		//info.setHorizontalAlignment(SwingConstants.LEFT);
+		//info.setHorizontalAlignment(SwingConstraints.LEFT);
 		panels[0].add(info);
 	}
 
@@ -92,61 +91,74 @@ public class View {
 		board = new JPanel();
 		area = new JButton[9];
 
-		JButton button1 = new JButton("");
+		JButton button1 = new JButton("?");
 		area[0] = button1;
-		JButton button2 = new JButton("");
+		JButton button2 = new JButton("?");
 		area[1] = button2;
-		JButton button3 = new JButton("");
+		JButton button3 = new JButton("?");
 		area[2] = button3;
-		JButton button4 = new JButton("");
+		JButton button4 = new JButton("?");
 		area[3] = button4;
-		JButton button5 = new JButton("");
+		JButton button5 = new JButton("?");
 		area[4] = button5;
-		JButton button6 = new JButton("");
+		JButton button6 = new JButton("?");
 		area[5] = button6;
-		JButton button7 = new JButton("");
+		JButton button7 = new JButton("?");
 		area[6] = button7;
-		JButton button8 = new JButton("");
+		JButton button8 = new JButton("?");
 		area[7] = button8;
-		JButton button9 = new JButton("");
+		JButton button9 = new JButton("?");
 		area[8] = button9;
 
 		for (int i = 0; i < area.length; i++) {
-			area[i].setContentAreaFilled(false);
+			area[i].setContentAreaFilled(true);
 			area[i].setFocusPainted(false);
 			area[i].setBorder(new LineBorder(Color.BLACK));
 			area[i].setBackground(Color.WHITE);
 			area[i].setOpaque(true);
+			area[i].setForeground(Color.WHITE);
+			area[i].setFont(new Font("Arial", Font.BOLD, 46));
 		}
 
 		board.setLayout(new GridBagLayout());
 		GridBagConstraints c = new GridBagConstraints();
 		c.gridx = 0;
 		c.gridy = 0;
-		c.ipadx = 100;
-		c.ipady = 50;
+		c.ipadx = 70;
+		c.ipady = 20;
 		c.fill = GridBagConstraints.HORIZONTAL;
 
 		int k = 0;
 		for(int i = 0; i < 3; i++){
 			for (int j = 0; j < 3; j++){
-				c.gridx = i;
-				c.gridy = j;
+				c.gridx = j;
+				c.gridy = i;
 				board.add(area[k],c);
 				k++;
 			}
 		}
-
 		panels[1].add(board);
 	}
 
 	private void setControlPanel() {
 
 		btn_name = new JButton("Submit");
-		name = new JTextField(10);
+		name = new JTextField(15);
 		
 		panels[2].add(name);
 		panels[2].add(btn_name);
+	}
+
+	public void drawMessage() {
+		JOptionPane.showMessageDialog(null, "Draw.", "Message", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void winMessage() {
+		JOptionPane.showMessageDialog(null, "Congratulations. You Win.", "Message", JOptionPane.INFORMATION_MESSAGE);
+	}
+
+	public void loseMessage() {
+		JOptionPane.showMessageDialog(null, "You lose.", "Message", JOptionPane.INFORMATION_MESSAGE);
 	}
 
 	public JTextField getName(){
