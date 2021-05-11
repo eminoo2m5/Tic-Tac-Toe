@@ -148,10 +148,6 @@ public class Controller {
 		view.getArea()[8].addActionListener(nine);
 	}
 
-	public void update(int n){
-		view.getInfo().setText("Valid move, wait for your opponent.");
-	}
-
 	class ClinetHandler extends Thread {
 		private Socket socket;
 
@@ -197,7 +193,8 @@ public class Controller {
 							}
 							ActionListener[] list = view.getArea()[update].getActionListeners();
 							view.getArea()[update].removeActionListener(list[0]);
-							view.getInfo().setText("Your opponent has moved, now is your turn");
+							if(player != lastplayer) view.getInfo().setText("Your opponent has moved, now is your turn");
+							else view.getInfo().setText("Valid move, wait for your opponent.");
 						}
 					} catch(NumberFormatException e){
 						if(command.equals("START")){

@@ -13,7 +13,6 @@ public class Server {
 
 	private int names;
 	boolean start = false;
-	private int trial;
 
 	// The set of all the print writers for all the clients, used for broadcast.
 	private Set<PrintWriter> writers = new HashSet<>();
@@ -69,10 +68,8 @@ public class Server {
 					int selected = -1;
 					System.out.println("Server Received: " + command);
 
-
 					try{
 						selected = Integer.parseInt(command.trim());
-						trial++;
 						if(selected/10 == 1){
 							game.oneSelected(selected%10);
 							if(game.checkWin()){
@@ -92,10 +89,11 @@ public class Server {
 							}
 						}
 
-						if(trial == 9 && !game.checkWin()){
+						if(game.checkFull()&&!game.checkWin()){
 							for (PrintWriter writer : writers) {
 									writer.println("DRAW");
 								}
+							System.out.println("Server Broadcasted: DRAW");
 						}
 					} catch(NumberFormatException e){
 						names++;
