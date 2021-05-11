@@ -9,8 +9,8 @@ import java.util.Scanner;
 public class Controller {
 
 	private View view;
-	private ActionListener upButtonListener;
-	private ActionListener downButtonListener;
+	private ActionListener submitListener;
+	private String clientName;
 
 	private Socket socket;
 	private Scanner in;
@@ -31,21 +31,16 @@ public class Controller {
 			e.printStackTrace();
 		}
 
-		upButtonListener = new ActionListener() {
+		submitListener = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
-				out.println("UP");
-				System.out.println("Client Sent: UP");
+				clientName = view.getName().getText();
+				view.getFrame().setTitle("Tic Tac Toe-Player: " + clientName);
+				view.getInfo().setText("WELCOME " + clientName);
+				out.println(clientName);
+				System.out.println("Client Sent: " + clientName);
 			}
 		};
-		view.getUpButton().addActionListener(upButtonListener);
-
-		downButtonListener = new ActionListener() {
-			public void actionPerformed(ActionEvent actionEvent) {
-				out.println("DOWN");
-				System.out.println("Client Sent: DOWN");
-			}
-		};
-		view.getDownButton().addActionListener(downButtonListener);
+		view.getSubmit().addActionListener(submitListener);
 
 		// Creates a new Thread for reading server messages
 		Thread handler = new ClinetHandler(socket);
@@ -74,7 +69,7 @@ public class Controller {
 					var command = in.nextLine();
 					System.out.println("Client Received: " + command);
 					out.flush();
-					view.getResultLabel().setText(command.trim());
+					//view.getResultLabel().setText(command.trim());
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

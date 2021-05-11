@@ -9,14 +9,12 @@ import java.net.Socket;
 
 public class Server {
 	private ServerSocket serverSocket;
-	private SharedNumber number;
 
 	// The set of all the print writers for all the clients, used for broadcast.
 	private Set<PrintWriter> writers = new HashSet<>();
 
 	public Server(ServerSocket serverSocket) {
 		this.serverSocket = serverSocket;
-		this.number = new SharedNumber();
 	}
 
 	public void start() {
@@ -58,7 +56,7 @@ public class Server {
 
 					System.out.println("Server Received: " + command);
 
-					if (command.startsWith("UP")) {
+					/*if (command.startsWith("UP")) {
 						number.up();
 					} else if (command.startsWith("DOWN")) {
 						number.down();
@@ -70,6 +68,7 @@ public class Server {
 					}
 
 					System.out.println("Server Broadcasted: " + number.getNumber());
+					*/
 
 				}
 			} catch (Exception e) {
