@@ -10,6 +10,8 @@ import java.util.Scanner;
 public class Controller {
 
 	private View view;
+
+	// list of all the listeners 
 	private ActionListener submitListener;
 	private ActionListener one;
 	private ActionListener two;
@@ -21,11 +23,12 @@ public class Controller {
 	private ActionListener eight;
 	private ActionListener nine;
 
+	//name of player
 	private String clientName;
+	//player#
 	private int player = -1;
+	//player# of latest turn & default = 2 so player1 always starts first
 	private int lastplayer = 2;
-	//private boolean player1 = false;
-	//private boolean myturn = false;
 
 	private Socket socket;
 	private Scanner in;
@@ -46,6 +49,7 @@ public class Controller {
 			e.printStackTrace();
 		}
 
+		//when client submits player name, send names to the server, and disable the textfield and submit button
 		submitListener = new ActionListener() {
 			public void actionPerformed(ActionEvent actionEvent) {
 				clientName = view.getName().getText();
@@ -59,6 +63,8 @@ public class Controller {
 		};
 		view.getSubmit().addActionListener(submitListener);
 
+		//when the client selects the area, send server the selected area in digit number
+		// first digit indicates the player# (1,2), second digit indicates the field selected (0-8)
 		one = new ActionListener(){
 			public void actionPerformed(ActionEvent actionEvent) {
 				if(lastplayer != player){
@@ -136,6 +142,10 @@ public class Controller {
 		Thread handler = new ClinetHandler(socket);
 		handler.start();
 	}
+
+	/*
+	 * this function adds listener to each button
+	 */
 	public void addListeners(){
 		view.getArea()[0].addActionListener(one);
 		view.getArea()[1].addActionListener(two);
@@ -171,8 +181,12 @@ public class Controller {
 					System.out.println("Client Received: " + command);
 					out.flush();
 
+					//if server sends one digit number then it is the player#
+					//If server sends two digit number then it is a selected field by the opponent
+					//If server sends a string then it is a starting signal or game reuslt
 					try{
 						int input = Integer.parseInt(command.trim());
+						//assign player#
 						if(input == 1){
 							player = 1;
 						}
@@ -180,6 +194,7 @@ public class Controller {
 							player = 2;
 						}
 						else if (input/10 > 0) {
+							//update the field according to opponent's move
 							int update = Integer.parseInt(command.trim())%10;
 							lastplayer = Integer.parseInt(command.trim())/10;
 
@@ -191,21 +206,30 @@ public class Controller {
 								view.getArea()[update].setText("O");
 								view.getArea()[update].setForeground(Color.RED);
 							}
+							//remove actionlistener so cannot be selected again
 							ActionListener[] list = view.getArea()[update].getActionListeners();
 							view.getArea()[update].removeActionListener(list[0]);
+							//update infomation panel
 							if(player != lastplayer) view.getInfo().setText("Your opponent has moved, now is your turn");
 							else view.getInfo().setText("Valid move, wait for your opponent.");
 						}
 					} catch(NumberFormatException e){
 						if(command.equals("START")){
+							//start the game by adding all the action listeners
 							addListeners();
 						} else if(command.equals("DRAW")){
 							view.drawMessage();
+							view.removeAllListeners();
+						} else if(command.equals("LEFT")){
+							view.leftMessage();
+							view.removeAllListeners();
 						} else {
+							//when command starts with "WIN"
 							String[] part = command.split(" ");
 							int winner = Integer.parseInt(part[1]);
 							if(winner == player) view.winMessage();
 							else view.loseMessage();
+							view.removeAllListeners();
 						}
 					}
 				}

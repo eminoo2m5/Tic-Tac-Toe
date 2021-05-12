@@ -6,6 +6,7 @@ public class TicTacToeClient {
 		SwingUtilities.invokeLater(new Runnable() {
 			@Override
 			public void run() {
+				//create each frame and add controllers
 				View view = new View();
 				Controller controller = new Controller(view);
 				controller.start();
