@@ -12,5 +12,5 @@
 Now enter the name of the player on each frame and enjoy the game!
 
 *IMPORTANT NOTE
-1. This game is strictly designed to have only TWO clients. If the game ends and clients are closed, you have to restarted the server (from procedure 3) to play the next game.
+1. This game is strictly designed to have only TWO clients. If you more than two terminal running the  Client, an error may occur.
 2. Your are not allowed to type in numbers and commands such as (WIN, DRAW, LEFT, START) for the player name.

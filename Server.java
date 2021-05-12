@@ -13,6 +13,7 @@ public class Server {
 
 	private int names;
 	boolean start = false;
+	private int clientCount = 0;
 
 	// The set of all the print writers for all the clients, used for broadcast.
 	private Set<PrintWriter> writers = new HashSet<>();
@@ -25,13 +26,13 @@ public class Server {
 
 	public void start() {
 		var pool = Executors.newFixedThreadPool(200);
-		int clientCount = 1;
-		while (clientCount<3) {
+		while (this.clientCount<3) {
 			try {
 				Socket socket = serverSocket.accept();
 				//assign client number to check there are maximum two players
+				clientCount++;
 				pool.execute(new Handler(socket,clientCount));
-				System.out.println("Connected to client " + clientCount++);
+				System.out.println("Connected to client " + clientCount);
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -134,7 +135,7 @@ public class Server {
 				// client disconnected
 				if (output != null) {
 					writers.remove(output);
-
+					clientCount--;
 					//if one client is disconnected, end the game
 					for (PrintWriter writer : writers) {
 						writer.println("LEFT");

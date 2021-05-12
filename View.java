@@ -152,21 +152,25 @@ public class View {
 	// this function displays draw message
 	public void drawMessage() {
 		JOptionPane.showMessageDialog(this.frame, "Draw.", "Message", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
 
 	// this function displays message when one of the player leaves
 	public void leftMessage() {
 		JOptionPane.showMessageDialog(this.frame, "Game Ends. One of the players left.", "Message", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
 
 	// this function displays win message
 	public void winMessage() {
 		JOptionPane.showMessageDialog(this.frame, "Congratulations. You Win.", "Message", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
 
 	// this function displays lose message
 	public void loseMessage() {
 		JOptionPane.showMessageDialog(this.frame, "You lose.", "Message", JOptionPane.INFORMATION_MESSAGE);
+		System.exit(0);
 	}
 
 	//get methods for name, button and other labels
